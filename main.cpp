@@ -1,5 +1,7 @@
+#include <cctype>
 #include <exception>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -10,12 +12,29 @@ enum Alphabets {
 
 Alphabets get_alphabet();
 int get_key();
+string get_text();
+
+string caesar_encrypt(string &text, int &key) {
+  string result = "";
+  for (char i : text) {
+    if (isalpha(i)) {
+      char base = isupper(i) ? 'A' : 'a';
+      result += char((i - base + key) % 26 + base);
+    } else
+      result += i;
+  }
+
+  return result;
+}
 
 void clear() { system("clear"); }
 
 int main() {
   Alphabets alphabet = get_alphabet();
   int key = get_key();
+  string text = get_text();
+  string encrypted_text = caesar_encrypt(text, key);
+  cout << encrypted_text;
 
   return 0;
 }
@@ -32,6 +51,26 @@ string prompt() {
   return tmp;
 }
 
+string get_text() {
+  string tmp;
+  bool end = false;
+  string text;
+  do {
+    clear();
+    cout << "Введите текст для шифрования: " << endl;
+    cout << ">>> ";
+    if ((cin >> tmp) && (cin.peek() == '\n') || cin.eof())
+      end = true;
+    if (!cin.eof()) {
+      text += " ";
+      text += tmp;
+    }
+
+  } while (!end);
+
+  return text;
+}
+
 int get_key() {
   bool loop = true;
   int key;
@@ -45,8 +84,10 @@ int get_key() {
     if (choose < 1) {
       error = "Неверно указан ключ (<1)";
       continue;
-    } else
+    } else {
+      key = choose;
       break;
+    }
   }
 
   return key;
