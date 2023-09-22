@@ -1,4 +1,6 @@
 #include <cctype>
+#include <cstdio>
+#include <cstring>
 #include <exception>
 #include <iostream>
 #include <vector>
@@ -30,11 +32,18 @@ string caesar_encrypt(string &text, int &key) {
 void clear() { system("clear"); }
 
 int main() {
-  Alphabets alphabet = get_alphabet();
-  int key = get_key();
-  string text = get_text();
-  string encrypted_text = caesar_encrypt(text, key);
-  cout << encrypted_text;
+  while (true) {
+    Alphabets alphabet = get_alphabet();
+    int key = get_key();
+    string text = get_text();
+    string encrypted_text = caesar_encrypt(text, key);
+    clear();
+    cout << "Зашифрованный текст: ";
+    cout << encrypted_text << endl << endl;
+    cout << "Введите любой символ чтобы продолжить..." << endl;
+    char temp;
+    cin >> temp;
+  }
 
   return 0;
 }
@@ -111,8 +120,9 @@ Alphabets get_alphabet() {
       loop = false;
       break;
     case (2):
-      alphabet = Cyrillic;
-      loop = false;
+      // alphabet = Cyrillic;
+      // loop = false;
+      error = "Кириллица временно не доступна!";
       break;
     default:
       error = "Неверный выбор!";
